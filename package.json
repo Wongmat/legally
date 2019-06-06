@@ -1,0 +1,47 @@
+{
+  "name": "legally",
+  "version": "3.3.7",
+  "description": "Check the licenses for the packages that you are using",
+  "main": "index.js",
+  "engines": {
+    "node": ">=6.0.0"
+  },
+  "scripts": {
+    "test": "jest --coverage",
+    "start": "node cli.js"
+  },
+  "bin": {
+    "mat-scan": "cli.js"
+  },
+  "author": "Francisco Presencia",
+  "license": "MIT",
+  "dependencies": {
+    "csvtojson": "^2.0.8",
+    "fs-array": "^2.2.1",
+    "minimist": "^1.2.0",
+    "validate-npm-package-name": "^3.0.0"
+  },
+  "devDependencies": {
+    "jest": "^23.6.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/franciscop/legally.git"
+  },
+  "keywords": [
+    "legally",
+    "licenses",
+    "check",
+    "legal",
+    "package",
+    "npm"
+  ],
+  "bugs": {
+    "url": "https://github.com/franciscop/legally/issues"
+  },
+  "homepage": "https://github.com/franciscop/legally#readme",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  }
+}
