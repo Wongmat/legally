@@ -6,15 +6,15 @@ const minimist = require('minimist');
 const legally = require('./');
 const analysis = require('./src/analysis');
 const clean = require('./src/options')
+const pScan = require('./src/python-scan')
 const args = minimist(process.argv.filter(e => !/^\/.+$/.test(e)), {
   string: 'output'
 });
-const { lstatSync, readdirSync } = require('fs')
+const { lstatSync, readdirSync, existsSync, writeFile} = require('fs')
 const { join } = require('path')
 const isDirectory = source => lstatSync(source).isDirectory()
 const getDirectories = source =>
   readdirSync(source).map(name => join(source, name)).filter(isDirectory)
-  const fs = require('fs')
 
 // node on windows inserts extra into argv that we need to remove
 // could be a bug in minimist
@@ -34,8 +34,8 @@ if (args.m) {
     args.routes = ["./" + dir]
     summary[dir] = await main(args)
   }
-  console.log(args)
-  if (args.output === "JSON") fs.writeFile("SUMMARY.json", JSON.stringify(summary), 'utf8', () => console.log("Summary saved"))
+  //console.log(args)
+  if (args.output === "JSON") writeFile("SUMMARY.json", JSON.stringify(summary), 'utf8', () => console.log("Summary saved"))
 })();
 
 
@@ -47,7 +47,9 @@ async function main (args) {
   try {
     const options = await clean(args);
     console.log(`Working on "${options.routes.join(', ') || '.'}". It might take a while...`);
-    const licenses = await legally(options); //index.js
+    //console.log(existsSync((options.routes[0] || '.') + '/package.json'))
+    const licenses = existsSync((options.routes[0] || '.') + '/package.json') ? await legally(options) : await pScan(options.routes[0] || '.') //index.js
+    //console.log('lic', licenses)
     return await analysis(licenses, options);
     }
    catch(error) {

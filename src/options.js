@@ -35,7 +35,7 @@ module.exports = async (opt = {}) => {
   if (opt.r) opt.show.push('reports');
   if (opt.rl) opt.show.push('risky');
 
-  if (!opt.show.length) opt.show = ['risky'];
+  if (!opt.show.length) opt.show = ['packages', 'risky'];
   opt.filter = opt.filter || [];
   opt.type = opt.type || [];
   opt.plain = Boolean(opt.plain);

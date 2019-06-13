@@ -1,5 +1,5 @@
 {
-  "name": "legally",
+  "name": "mat-scan",
   "version": "3.3.7",
   "description": "Check the licenses for the packages that you are using",
   "main": "index.js",
@@ -35,13 +35,5 @@
     "legal",
     "package",
     "npm"
-  ],
-  "bugs": {
-    "url": "https://github.com/franciscop/legally/issues"
-  },
-  "homepage": "https://github.com/franciscop/legally#readme",
-  "directories": {
-    "lib": "lib",
-    "test": "test"
-  }
+  ]
 }

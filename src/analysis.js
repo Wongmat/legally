@@ -1,23 +1,6 @@
 const table = require('./table');
 const normal = require('./normalize');
 const fs = require('fs');
-/*const csv=require('csvtojson/v2');
-
-var exList
-const pullEx = async () => {
-  exList = await csv({
-    output: "csv"
-  }).fromFile(path)
-
-  exList = exList.reduce((res, entry, index, arr) => { 
-    res[entry[0] + '@' + entry[1]] = {license: entry[2], reason: entry[3] }
-    return res
-    }  , {} )
-    fs.writeFile("exclusionListV2.json", JSON.stringify(exList), () => {}
-)
-}
-
-pullEx() */
 const path = "./exclusionList.json"
 const exList = JSON.parse(fs.readFileSync(path))
 const greenList = ["MIT", "ISC", "BSD 3 Clause", "Apache 2.0", 
@@ -59,7 +42,7 @@ module.exports = function(licenses, opt){
     }, { title: 'Packages (' + data.length + ')', repeat: 50, ...opt });
   } else {
     outputJSON.all = licenses
-    fs.writeFile("allDependencies.json", JSON.stringify(licenses), 'utf8', () => console.log("Report saved"))
+    fs.writeFile((opt.routes[0] || "") + "-allDependencies.json", JSON.stringify(licenses, null, 2), 'utf8', () => console.log("Report saved"))
   }
   }
 
@@ -131,7 +114,7 @@ module.exports = function(licenses, opt){
       })
       let riskyKeys = Object.keys(risky)
       let excludedKeys = Object.keys(excluded)
-      let folderName = opt.routes.length === 0 ? "" : opt.routes[0].substring(2) + ": "
+      let folderName = opt.routes.length === 0 ? "" : opt.routes[0].substring(2)
       let remaining = riskyKeys.filter((package) => !excludedKeys.find(item => item[0] === package[0].split('@')[0]))
                                .reduce((obj, key) => (obj[key] = risky[key], obj), {})
 
@@ -175,7 +158,7 @@ module.exports = function(licenses, opt){
     }
    else {
      let final = JSON.stringify({risky: risky, diffVer: diffVer, excluded: excluded, remaining, remaining})
-     fs.writeFile(folderName + "RiskReport.json", final, 'utf8', () => console.log("Risky Report saved"))
+     fs.writeFile(folderName + "-RiskReport.json", final, 'utf8', () => console.log("Risky Report saved"))
      outputJSON.riskyReport = JSON.parse(final)
    }
    
