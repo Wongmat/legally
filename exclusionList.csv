@@ -1,9 +1,0 @@
-Name,Version,License,Description
-terminate,2.1.0,GPL-2.0,"A development tool that is not included in the production enviornment. 
-There is no operating function depending on it."
-certifi,2018.10.15,MPL-2.0,Used for network security (https communications) - i.e. protocol standards
-jwcrypto,0.5.0,LGPLv3+,Used for network security (library for decoding security tokens) - i.e. protocol standards
-chardet,3.0.4,LGPLv2.1,Ancillary tool used to help parse texts (strings) 
-psycopg2-binary,2.7.5,LGPLv3+,Ancillary tool for connecting databases
-wordpress,,GPL-2.0,"A popular blogging engine, with Bowtie customized modifications to support marketing (Search Engine Optimization)"
-json-schema,0.2.1,AFL 2.1,Blah Blah Blah Blah Blah

@@ -29,13 +29,14 @@ if (args.m) {
 (async () => {
   var summary = {}
   var dirs = await getDirectories("./").filter((entry) => isDirectory(entry))
+  console.log(dirs)
   for (var dir of dirs) {
 
     args.routes = ["./" + dir]
     summary[dir] = await main(args)
   }
   //console.log(args)
-  if (args.output === "JSON") writeFile("SUMMARY.json", JSON.stringify(summary), 'utf8', () => console.log("Summary saved"))
+  if (args.output === "JSON") writeFile("SUMMARY.json", JSON.stringify(summary, null, 2), 'utf8', () => console.log("Summary saved"))
 })();
 
 

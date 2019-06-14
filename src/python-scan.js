@@ -1,16 +1,14 @@
 const {walk, read} = require('fs-array');
 const searchText = require('./search_text')
-const {spawnSync, spawn, exec} = require('child_process')
+const {spawnSync} = require('child_process')
 const isMetadata = /(\/|\\)METADATA$/;
 
 module.exports = (root = '.') => { 
-        var pip = spawnSync('python3', ['-m', 'venv', root + '/tempvenv'])
-        var activate =  exec('source ' + root + '/tempvenv/bin/activate', (err, stdout, stderr) => {
-            if (!err) stdout.pipe(spawn('pip', ['install', '-r', root + '/requirements.txt' ].stdin))
-            console.log(stdout.toString())
-        })
-
-        return walk(root + '/venvTest2/lib/python3.7/site-packages')
+        console.log("Installing Python packages to " + root)
+        spawnSync('python3', ['-m', 'venv', root + '/tempvenv'])
+        var install = spawnSync(root + '/tempvenv/bin/pip', ['install', '-r', root + '/requirements.txt'])
+        console.log(install.output.toString())
+        return walk(root + '/tempvenv/lib/python3.7/site-packages')
         .filter(pkg => isMetadata.test(pkg))
         .map(async pkg => {
         var pack = pkg.split('/')
@@ -18,6 +16,7 @@ module.exports = (root = '.') => {
         pack = pack.split('-')
         ver = pack[1]
         var name = pack[0]
+        console.log(pkg)
         return {
             name: name + '@' + ver,
             package: await searchText(await read(pkg)),

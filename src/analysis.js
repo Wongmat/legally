@@ -1,13 +1,9 @@
 const table = require('./table');
 const normal = require('./normalize');
 const fs = require('fs');
-const path = "./exclusionList.json"
-const exList = JSON.parse(fs.readFileSync(path))
-const greenList = ["MIT", "ISC", "BSD 3 Clause", "Apache 2.0", 
-                   "BSD 2 Clause", "CC0", "W3C", "JSON", "BSD", 
-                   "WTFPL", "Unlicense", "Amazon Software License", "CC BY 3.0",
-                   "W3C 3-clause BSD License", "Zlib", "Public Domain", "Standard PIL License", 
-                   "Simplified BSD", "Apache Software License", "New BSD License", "ZPL 2.1"]
+const strategy = "./strategy.json"
+const exList = JSON.parse(fs.readFileSync(strategy)).exclusions
+const greenList = JSON.parse(fs.readFileSync(strategy)).greenList
 
 
 
@@ -33,17 +29,17 @@ module.exports = function(licenses, opt){
   ]);
 
   if (opt.show.includes('packages')) {
-    if (opt.output === "table") {
+    /*if (opt.output === "table") {
     table(data, { //create ALL table
       'Module name': parseInt(25 * opt.width / 80),
       'package': parseInt(14 * opt.width / 80),
       'License': parseInt(14 * opt.width / 80),
       'README': parseInt(14 * opt.width / 80)
     }, { title: 'Packages (' + data.length + ')', repeat: 50, ...opt });
-  } else {
+  } else {*/
     outputJSON.all = licenses
     fs.writeFile((opt.routes[0] || "") + "-allDependencies.json", JSON.stringify(licenses, null, 2), 'utf8', () => console.log("Report saved"))
-  }
+  //}
   }
 
   // Count each of the licenses
@@ -157,7 +153,7 @@ module.exports = function(licenses, opt){
       //console.log("remaining", remaining)
     }
    else {
-     let final = JSON.stringify({risky: risky, diffVer: diffVer, excluded: excluded, remaining, remaining})
+     let final = JSON.stringify({risky: risky, diffVer: diffVer, excluded: excluded, remaining, remaining}, null, 2)
      fs.writeFile(folderName + "-RiskReport.json", final, 'utf8', () => console.log("Risky Report saved"))
      outputJSON.riskyReport = JSON.parse(final)
    }
@@ -176,7 +172,7 @@ module.exports = function(licenses, opt){
 
   // REPORT
 
-  var facts = [];
+  /*var facts = [];
 
   var licensed = data.map(e => e.slice(1).join('')).filter(e => !/^\-+$/.test(e));
 
@@ -213,6 +209,6 @@ module.exports = function(licenses, opt){
       [parseInt(70 * opt.width / 80)],
       Object.assign({ title: 'Reports', margin: 3 }, opt)
     );
-  }
+  }*/
   return outputJSON
 }

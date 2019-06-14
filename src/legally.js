@@ -1,7 +1,7 @@
 const { join, list, read, stat, walk } = require('fs-array');
 const searchText = require('./search_text');
 const searchJson = require('./search_json');
-
+const {execSync} = require('child_process');
 // Search for text in any of the matching regex files for the root
 const search = (root, regex) => list(root)
   .filter(file => regex.test(file))
@@ -25,7 +25,12 @@ const isReadme = /readme(\.md|\.txt)?$/i;
 const isTestFile = /(\/test\/)|(\\test\\)/
 
 // Root project to analize
-module.exports = (root = './node_modules') => walk(root) //default = ./node modules
+module.exports = (root = './node_modules') => {
+  var packName = root.replace(/(\/|\\)node_modules$/, '')
+  console.log(packName)
+  console.log("Installing NPM packages to " + packName)
+  execSync('cd ' + packName + '&& npm install')
+  return walk(root) //default = ./node modules
   .filter(file => isPackage.test(file))    // Only find package.json parent folders
   .filter(file => !isTestFile.test(file))  // Avoid looking into some resolver tests
   .map(pkg => pkg.replace(isPackage, ''))
@@ -38,4 +43,4 @@ module.exports = (root = './node_modules') => walk(root) //default = ./node modu
   }))
   .sort((a, b) => a.name.localeCompare(b.name))
   .reduce((obj, { name, ...one }) => ({ ...obj, [name]: one }), {});
-
+}
